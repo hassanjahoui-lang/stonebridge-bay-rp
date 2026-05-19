@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Autenticazione Discord</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #0d0d0d;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 60px;
+    }
+    .box {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 20px #5865F2;
+    }
+    code {
+      background: black;
+      padding: 10px;
+      border-radius: 6px;
+      display: block;
+      margin-top: 15px;
+      font-size: 18px;
+      color: #00ff9d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>Autenticazione Discord</h1>
+    <p>Attendi mentre verifichiamo il tuo accesso...</p>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    const resultBox = document.getElementById("result");
+
+    if (!code) {
+      resultBox.innerHTML = `
+        <h2 style="color:#ff4444;">Errore</h2>
+        <p>Nessun codice ricevuto da Discord.</p>
+      `;
+    } else {
+      resultBox.innerHTML = `
+        <h2 style="color:#00ff9d;">Accesso completato!</h2>
+        <p>Questo è il tuo codice di autenticazione:</p>
+        <code>${code}</code>
+        <p>Invialo allo staff per completare la verifica.</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
