@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento completato - Stonebridge Bay RP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Arial Black", sans-serif;
+      background: url('img/gta_background.jpg') center/cover no-repeat fixed;
+      color: white;
+      text-align: center;
+    }
+
+    .overlay {
+      background: rgba(0,0,0,0.65);
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .box {
+      background: rgba(20,20,20,0.85);
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      border: 3px solid #00ff9d;
+      box-shadow: 0 0 25px #00ff9d;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      color: #00ff9d;
+      text-shadow: 0 0 10px #00ff9d;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #e5e5e5;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 25px;
+      background: #00ff9d;
+      color: black;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px #00ff9d;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #00d986;
+      box-shadow: 0 0 25px #00ff9d;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="overlay">
+    <div class="box">
+      <h1>PAGAMENTO COMPLETATO</h1>
+      <p>Grazie per aver supportato <strong>Stonebridge Bay RP</strong>.</p>
+      <p>Il tuo ordine è stato registrato correttamente.</p>
+
+      <a href="index.html" class="btn">Torna allo Shop</a>
+    </div>
+  </div>
+
+</body>
+</html>

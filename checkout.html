@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - Stonebridge Bay RP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PAYPAL SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=EUR"></script>
+</head>
+
+<body>
+
+  <header class="sb-header">
+    <div class="logo">
+      <span class="logo-main">Checkout</span>
+      <span class="logo-sub">Stonebridge Bay RP</span>
+    </div>
+  </header>
+
+  <section class="shop-section">
+    <h2>Riepilogo ordine</h2>
+
+    <div id="checkoutItems" class="product-grid"></div>
+
+    <h3 style="margin-top:20px;">
+      Totale: € <span id="checkoutTotal">0.00</span>
+    </h3>
+
+    <!-- 🔥 TASTO PER PAGARE -->
+    <button id="payNowBtn" class="btn-primary" style="margin-top:20px;">
+      💸 Paga ora (€ <span id="payAmount">0.00</span>)
+    </button>
+
+    <!-- 🔥 CONTENITORE PAYPAL -->
+    <div id="paypal-button-container" style="margin-top:20px; display:none;"></div>
+  </section>
+
+  <script>
+    // ====== CARICA CARRELLO ======
+    let cart = JSON.parse(localStorage.getItem("cartData") || "[]");
+
+    const checkoutItems = document.getElementById("checkoutItems");
+    const checkoutTotal = document.getElementById("checkoutTotal");
+    const payNowBtn = document.getElementById("payNowBtn");
+    const payAmount = document.getElementById("payAmount");
+    const paypalContainer = document.getElementById("paypal-button-container");
+
+    // ====== RENDER ORDINE ======
+    function renderCheckout() {
+      checkoutItems.innerHTML = "";
+
+      if (cart.length === 0) {
+        checkoutItems.innerHTML = `<p style="color:#9ca3af;">Il carrello è vuoto.</p>`;
+        checkoutTotal.textContent = "0.00";
+        payAmount.textContent = "0.00";
+        return;
+      }
+
+      cart.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "product-card";
+        div.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>Quantità: ${item.qty}</p>
+          <p>Prezzo: € ${item.price.toFixed(2)}</p>
+        `;
+        checkoutItems.appendChild(div);
+      });
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      checkoutTotal.textContent = total.toFixed(2);
+      payAmount.textContent = total.toFixed(2);
+    }
+
+    renderCheckout();
+
+    // ====== MOSTRA PAYPAL E AVVIA PAGAMENTO ======
+    payNowBtn.addEventListener("click", () => {
+      payNowBtn.style.display = "none";
+      paypalContainer.style.display = "block";
+
+      // 🔥 Avvia PayPal subito
+      setTimeout(() => {
+        const paypalFrame = document.querySelector("#paypal-button-container iframe");
+        if (paypalFrame) paypalFrame.contentWindow.focus();
+      }, 500);
+    });
+
+    // ====== PAYPAL ======
+    paypal.Buttons({
+      createOrder: function (data, actions) {
+        const total = checkoutTotal.textContent;
+
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: total },
+            description: "Acquisto Stonebridge Bay RP"
+          }]
+        });
+      },
+
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          fetch("webhook.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cart, paypal: details })
+          });
+
+          localStorage.removeItem("cartData");
+          window.location.href = "success.html";
+        });
+      },
+
+      onCancel: function () {
+        window.location.href = "cancel.html";
+      },
+
+      onError: function (err) {
+        console.error(err);
+        alert("Errore durante il pagamento.");
+      }
+    }).render("#paypal-button-container");
+  </script>
+
+</body>
+</html>

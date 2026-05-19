@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrello – Stonebridge Bay RP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{margin:0;font-family:sans-serif;background:#0f172a;color:white;}
+    .box{
+      max-width:450px;margin:40px auto;background:#1e293b;
+      padding:20px;border-radius:12px;
+    }
+    .item{
+      display:flex;justify-content:space-between;
+      border-bottom:1px solid #334155;padding:8px 0;
+    }
+    .btn{
+      width:100%;padding:12px;background:#22c55e;border:none;
+      border-radius:8px;color:white;font-weight:bold;cursor:pointer;
+      margin-top:15px;font-size:1rem;
+    }
+    input{
+      width:100%;padding:10px;border-radius:8px;border:none;
+      background:#0f172a;color:white;margin-bottom:15px;
+    }
+    a{color:#38bdf8;text-decoration:none;display:block;margin-top:20px;text-align:center;}
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Carrello</h2>
+
+  <div id="cartItems"></div>
+
+  <p><strong>Totale: € <span id="cartTotal">0.00</span></strong></p>
+
+  <label>ID Roleplay</label>
+  <input id="rpId" placeholder="steam:1100001...">
+
+  <button class="btn" id="checkoutBtn">Vai al checkout</button>
+
+  <a href="index.html">← Torna allo shop</a>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cartData") || "[]");
+
+const cartItems = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
+
+function renderCart(){
+  cartItems.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(i=>{
+    total += i.price * i.qty;
+    cartItems.innerHTML += `
+      <div class="item">
+        <span>${i.name} x${i.qty}</span>
+        <span>€ ${(i.price * i.qty).toFixed(2)}</span>
+      </div>
+    `;
+  });
+
+  cartTotal.textContent = total.toFixed(2);
+}
+
+renderCart();
+
+document.getElementById("checkoutBtn").onclick = () => {
+  const rpId = document.getElementById("rpId").value.trim();
+
+  if(!rpId){
+    alert("Inserisci ID RP");
+    return;
+  }
+
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+
+  localStorage.setItem("checkoutOrder", JSON.stringify({
+    cart: cart,
+    total: total,
+    rpId: rpId
+  }));
+
+  window.location.href = "checkout.html";
+};
+</script>
+
+</body>
+</html>

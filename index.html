@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Stonebridge Bay RP - Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PAYPAL SDK (INSERISCI IL TUO CLIENT ID) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=EUR"></script>
+</head>
+
+<body>
+
+  <header class="sb-header">
+    <div class="logo">
+      <span class="logo-main">Stonebridge Bay RP</span>
+      <span class="logo-sub">Official Shop</span>
+    </div>
+    <div id="cartToggle" class="cart-icon">🛒 Carrello (<span id="cartCount">0</span>)</div>
+  </header>
+
+  <section class="hero">
+    <h1>Shop Ufficiale</h1>
+    <p>Scegli il tuo pacchetto e supporta il server RP.</p>
+  </section>
+
+  <section class="shop-section">
+    <h2>Prodotti disponibili</h2>
+    <div id="productGrid" class="product-grid"></div>
+  </section>
+
+  <!-- SIDEBAR CARRELLO -->
+  <div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h3>Il tuo carrello</h3>
+      <button id="closeCart" class="close-btn">✕</button>
+    </div>
+
+    <div id="cartItems" class="cart-items"></div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Totale:</span>
+        <strong>€ <span id="cartTotal">0.00</span></strong>
+      </div>
+
+      <label>ID Roleplay</label>
+      <input id="rpId" placeholder="steam:1100001...">
+
+      <!-- 🔥 BOTTONE CHECKOUT -->
+      <button id="goCheckout" class="btn-primary" style="margin-top:10px;">
+          <a href="checkout.html">Vai al checkout</a>
+      </button>
+
+      <!-- 🔥 PayPal disegna qui il bottone -->
+      <div id="paypal-button-container" style="margin-top:15px;"></div>
+    </div>
+  </div>
+
+  <div id="cartOverlay" class="cart-overlay"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
